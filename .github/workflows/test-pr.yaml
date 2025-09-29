@@ -1,4 +1,4 @@
-name: "CI - Test Templates"
+name: "CI - Test Features"
 on:
   pull_request:
 
@@ -6,27 +6,51 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      templates: ${{ steps.filter.outputs.changes }}
+      any-changed: ${{ steps.changes.outputs.any-changed }}
+      all-changed-files: ${{ steps.changes.outputs.all-changed-files }}
     steps:
-      - uses: dorny/paths-filter@v2
-        id: filter
+      - uses: actions/checkout@v3
         with:
-          filters: |
-            color: ./**/color/**
-            hello: ./**/hello/**
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changes
+        uses: tj-actions/changed-files@v41
+        with:
+          files: src/**
 
   test:
     needs: [detect-changes]
     runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      matrix:
-        templates: ${{ fromJSON(needs.detect-changes.outputs.templates) }}
+    if: needs.detect-changes.outputs.any-changed == 'true'
     steps:
       - uses: actions/checkout@v3
 
-      - name: Smoke test for '${{ matrix.templates }}'
-        id: smoke_test
-        uses: ./.github/actions/smoke-test
-        with:
-          template: "${{ matrix.templates }}"
+      - name: Install @devcontainers/cli
+        run: npm install -g @devcontainers/cli
+
+      - name: Get feature names from changed files
+        id: get-features
+        run: |
+          changed_files="${{ needs.detect-changes.outputs.all-changed-files }}"
+          features=""
+          for file in $changed_files; do
+            if [[ $file == src/* ]]; then
+              feature=$(echo $file | cut -d'/' -f2)
+              if [[ ! $features =~ $feature ]]; then
+                features="$features $feature"
+              fi
+            fi
+          done
+          features=$(echo $features | xargs)  # trim whitespace
+          echo "features=$features" >> $GITHUB_OUTPUT
+          echo "Detected features: $features"
+
+      - name: Test changed features
+        if: steps.get-features.outputs.features != ''
+        run: |
+          features="${{ steps.get-features.outputs.features }}"
+          for feature in $features; do
+            echo "Testing feature: $feature"
+            devcontainer features test --features $feature
+          done
