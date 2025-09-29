@@ -7,7 +7,7 @@ Installs Flowspace CLI during container build. Docker will be available at runti
 
 ```json
 "features": {
-    "ghcr.io/ai-substrate/devcontainer-features/flowspace:1": {}
+    "ghcr.io/AI-Substrate/devcontainer-features/flowspace:1": {}
 }
 ```
 
@@ -63,4 +63,4 @@ The Flowspace Feature provisions the Flowspace CLI and the minimum host tooling 
 
 ---
 
-_Note: This file was auto-generated from the [devcontainer-feature.json](devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
+_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/AI-Substrate/devcontainer-features/blob/main/src/flowspace/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
