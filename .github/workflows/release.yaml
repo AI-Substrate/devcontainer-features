@@ -1,4 +1,4 @@
-name: "Release Dev Container Templates & Generate Documentation"
+name: "Release Dev Container Features & Generate Documentation"
 on:
   workflow_dispatch:
 
@@ -13,11 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: "Publish Templates"
+      - name: "Publish Features"
         uses: devcontainers/action@v1
         with:
-          publish-templates: "true"
-          base-path-to-templates: "./src"
+          publish-features: "true"
+          base-path-to-features: "./src"
           generate-docs: "true"
 
         env:

@@ -1,0 +1,23 @@
+{
+  "id": "flowspace",
+  "version": "1.0.0",
+  "name": "Flowspace",
+  "documentationURL": "https://github.com/AI-Substrate/devcontainer-features/tree/main/src/flowspace",
+  "description": "Installs Flowspace CLI during container build. Docker will be available at runtime for scans.",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "description": "Flowspace release to install. Leave as \"latest\" to track the newest stable build."
+    },
+    "preRelease": {
+      "type": "boolean",
+      "default": false,
+      "description": "Set to true to opt into Flowspace pre-release builds via FLOWSPACE_PRE_RELEASE."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/devcontainers/features/docker-in-docker"
+  ]
+}

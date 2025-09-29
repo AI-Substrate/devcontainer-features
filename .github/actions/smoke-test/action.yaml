@@ -1,3 +1,5 @@
+# NOTE: This action is for DevContainer Templates only
+# For DevContainer Features, use 'devcontainer features test' directly
 name: 'Smoke test'
 inputs:
   template:
