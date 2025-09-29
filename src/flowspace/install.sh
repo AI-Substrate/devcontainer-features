@@ -101,14 +101,6 @@ install_binary() {
     chmod +x "$install_dir/flowspace"
     rm -rf "$temp_dir"
     
-    # /usr/local/bin is already in PATH on most systems, but verify
-    if ! echo "$PATH" | grep -q "/usr/local/bin"; then
-        info "Adding /usr/local/bin to system PATH..."
-        # Add to system-wide profile if needed
-        if [[ -w "/etc/profile" ]]; then
-            echo 'export PATH="/usr/local/bin:$PATH"' >> /etc/profile
-        fi
-    fi
     
     success "Installed to $install_dir/flowspace"
 }
